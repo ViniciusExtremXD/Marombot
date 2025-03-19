@@ -1,0 +1,237 @@
+<!--
+Integrantes do grupo:
+Rodrigo Lucas - 10365071
+Vitor Machad0 - 10409351
+Vinícius Magno - 10401365
+-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Wall.ie - Blogs</title>
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    /* Reset básico e configurações gerais */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f0f0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 100vh;
+    }
+    /* Container principal */
+    .container-blogs {
+      display: flex;
+      width: 85%;
+      height: 80%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+    /* Painel esquerdo (gradiente) */
+    .left-panel {
+      background: linear-gradient(135deg, #127369 0%, #19a89d 100%);
+      color: #ffffff;
+      width: 35%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    .left-panel h1 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .left-panel p {
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.9;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    /* Botão "Voltar para o Chat" */
+    .btn-back {
+      background-color: #127369;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      margin-bottom: 30px;
+    }
+    .btn-back:hover {
+      background-color: #0f5f58;
+    }
+    /* Painel direito */
+    .right-panel {
+      width: 65%;
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+    .right-panel h2 {
+      color: #127369;
+      font-weight: 600;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    /* Lista de blogs */
+    .blog-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .blog-item {
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 15px;
+      background-color: #f9f9f9;
+    }
+    .blog-item h3 {
+      margin-top: 0;
+      color: #127369;
+    }
+    .blog-item p {
+      margin-bottom: 10px;
+      color: #555;
+    }
+    .blog-item a {
+      color: #127369;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .blog-item a:hover {
+      text-decoration: underline;
+    }
+    /* Rodapé */
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+    }
+    /* Easter Egg - estilo da imagem Toasty */
+    .toasty-image {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 150px;
+      animation: toastyAnim 2s ease-in-out forwards;
+      z-index: 9999;
+    }
+    @keyframes toastyAnim {
+      0% { opacity: 0; transform: translateX(-100%); }
+      25% { opacity: 1; transform: translateX(0); }
+      75% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+  <!-- Container principal dos blogs -->
+  <div class="container-blogs">
+    <!-- Painel esquerdo -->
+    <div class="left-panel">
+      <h1>Wall.ie</h1>
+      <p>Descubra onde encontrar as melhores informações e dicas sobre reciclagem de lixo eletrônico.</p>
+      <!-- Botão para voltar ao Chat -->
+      <a href="chat.html" class="btn-back">Voltar para o Chat</a>
+    </div>
+    <!-- Painel direito com a lista de blogs -->
+    <div class="right-panel">
+      <h2>Principais Blogs sobre Reciclagem</h2>
+      <div class="blog-list">
+        <!-- Blog 1 -->
+        <div class="blog-item">
+          <h3>eCycle</h3>
+          <p>O eCycle é um dos portais mais completos sobre sustentabilidade. Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.</p>
+          <a href="https://ecycle.com.br/" target="_blank">Visitar eCycle</a>
+        </div>
+        <!-- Blog 2 -->
+        <div class="blog-item">
+          <h3>CicloVivo</h3>
+          <p>O CicloVivo traz notícias e conteúdos sobre meio ambiente, cidades sustentáveis e práticas ecológicas, incluindo reciclagem e manejo correto de resíduos.</p>
+          <a href="https://ciclovivo.com.br/" target="_blank">Visitar CicloVivo</a>
+        </div>
+        <!-- Blog 3 -->
+        <div class="blog-item">
+          <h3>Portal do Meio Ambiente</h3>
+          <p>Focado em discussões e artigos sobre sustentabilidade, o Portal do Meio Ambiente aborda temas de reciclagem, legislação e cidadania.</p>
+          <a href="http://www.portaldomeioambiente.org.br/" target="_blank">Visitar Portal do Meio Ambiente</a>
+        </div>
+        <!-- Blog 4 -->
+        <div class="blog-item">
+          <h3>EcoDebate</h3>
+          <p>O EcoDebate é um portal que reúne artigos, análises e debates sobre questões ambientais, incluindo reciclagem e descarte adequado de resíduos.</p>
+          <a href="https://www.ecodebate.com.br/" target="_blank">Visitar EcoDebate</a>
+        </div>
+        <!-- Blog 5 -->
+        <div class="blog-item">
+          <h3>GreenMe</h3>
+          <p>O GreenMe publica conteúdos sobre vida sustentável, incluindo dicas de reciclagem, redução de lixo e preservação ambiental.</p>
+          <a href="https://www.greenme.com.br/" target="_blank">Visitar GreenMe</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Rodapé clicável -->
+  <footer id="footerAlpha">
+    wall.ie versão alfa 0.0.1
+  </footer>
+  
+  <script>
+    // Easter Egg: ao clicar 5 vezes no rodapé, mostra a imagem "Toasty.png"
+    let clickCount = 0;
+    const footer = document.getElementById('footerAlpha');
+    footer.addEventListener('click', function() {
+      clickCount++;
+      if (clickCount >= 5) {
+        showToasty();
+        clickCount = 0; // reinicia a contagem
+      }
+    });
+    
+    function showToasty() {
+      const toasty = document.createElement('img');
+      toasty.src = 'Toasty.png';
+      toasty.alt = 'Toasty';
+      toasty.className = 'toasty-image';
+      document.body.appendChild(toasty);
+      // Remove a imagem após 2 segundos
+      setTimeout(() => {
+        toasty.remove();
+      }, 2000);
+    }
+  </script>
+</body>
+</html>

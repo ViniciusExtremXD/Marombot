@@ -1,0 +1,460 @@
+<!--
+Integrantes do grupo:
+Rodrigo Lucas - 10365071
+Vitor Machad0 - 10409351
+Vinícius Magno - 10401365
+-->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Wall.ie - Chat</title>
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+    rel="stylesheet"
+  >
+  <style>
+    /* Reset básico e configurações gerais */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f0f0;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      min-height: 100vh;
+    }
+
+    /* Container principal */
+    .container-chat {
+      display: flex;
+      width: 85%;
+      height: 80%;
+      max-width: 1200px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    /* Painel esquerdo com gradiente */
+    .left-panel {
+      background: linear-gradient(135deg, #127369 0%, #19a89d 100%);
+      color: #ffffff;
+      width: 30%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+    .left-panel h1 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+    .left-panel p {
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.9;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    /* Container do menu expansível */
+    .collapsible-container {
+      width: 100%;
+    }
+    .collapsible-header {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      text-align: center;
+      margin-bottom: 15px;
+      transition: background-color 0.3s;
+    }
+    .collapsible-header:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .collapsible-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .collapsible-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .collapsible-content.expanded {
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .question-card {
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      margin-bottom: 10px;
+      padding: 10px;
+      text-align: center;
+    }
+    .question-card a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .question-card a:hover {
+      color: #f0f0f0;
+    }
+
+    /* Botões de Recursos */
+    .resource-buttons {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .resource-buttons a.btn {
+      text-align: center;
+      border-radius: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-weight: 500;
+      padding: 10px;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+    }
+    .resource-buttons a.btn:hover {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+
+    /* Painel direito (chat) */
+    .right-panel {
+      width: 70%;
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      box-sizing: border-box;
+    }
+    /* Cabeçalho do painel direito com título e botão de Logout */
+    .chat-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .chat-header h2 {
+      color: #127369;
+      font-weight: 600;
+      font-size: 24px;
+      margin: 0;
+    }
+    .btn-logout {
+      background-color: #127369;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-logout:hover {
+      background-color: #0f5f58;
+    }
+    /* Janela do chat */
+    #chatWindow {
+      flex-grow: 1;
+      background-color: #f8f8f8;
+      border-radius: 10px;
+      padding: 15px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
+    .message {
+      margin-bottom: 10px;
+    }
+    .message-text {
+      display: inline-block;
+      border-radius: 10px;
+      padding: 8px 12px;
+      max-width: 60%;
+      word-wrap: break-word;
+      margin: 5px 0;
+    }
+    .message.user {
+      text-align: right;
+    }
+    .message.user .message-text {
+      background-color: #127369;
+      color: #fff;
+    }
+    .message.bot {
+      text-align: left;
+    }
+    .message.bot .message-text {
+      background-color: #19a89d;
+      color: #fff;
+    }
+    /* Input e botão de envio */
+    .input-group {
+      display: flex;
+      gap: 10px;
+    }
+    .form-control {
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      flex-grow: 1;
+      font-size: 14px;
+    }
+    .btn-submit {
+      background-color: #127369;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .btn-submit:hover {
+      background-color: #0f5f58;
+    }
+    /* Rodapé clicável */
+    footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      cursor: pointer;
+    }
+    /* Easter Egg: estilo da imagem Toasty */
+    .toasty-image {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      width: 150px;
+      animation: toastyAnim 2s ease-in-out forwards;
+      z-index: 9999;
+    }
+    @keyframes toastyAnim {
+      0% { opacity: 0; transform: translateX(-100%); }
+      25% { opacity: 1; transform: translateX(0); }
+      75% { opacity: 1; transform: translateX(0); }
+      100% { opacity: 0; transform: translateX(-100%); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Container principal do chat -->
+  <div class="container-chat">
+    <!-- Painel esquerdo com gradiente, menu expansível e botões de recursos -->
+    <div class="left-panel">
+      <h1>Wall.ie</h1>
+      <p>Seu assistente de reciclagem de lixo eletrônico. 
+         Descubra quais componentes podem ser reciclados e onde descartá-los corretamente.</p>
+      <!-- Menu expansível -->
+      <div class="collapsible-container">
+        <div class="collapsible-header" onclick="toggleCollapsible()">
+          <h3>Principais perguntas</h3>
+        </div>
+        <div class="collapsible-content">
+          <div class="question-card">
+            <a href="#">Como reciclar lixo eletrônico?</a>
+          </div>
+          <div class="question-card">
+            <a href="#">Principais contaminantes na natureza</a>
+          </div>
+          <div class="question-card">
+            <a href="#">Onde descartar pilhas e baterias?</a>
+          </div>
+          <div class="question-card">
+            <a href="#">Logística reversa: por que é importante?</a>
+          </div>
+          <div class="question-card">
+            <a href="#">Leis e normas sobre e-waste no Brasil</a>
+          </div>
+        </div>
+      </div>
+      <!-- Botões de Recursos -->
+      <div class="resource-buttons">
+        <a class="btn" href="https://www.google.com/maps/search/ecoponto" target="_blank">Ecoponto</a>
+        <a class="btn" href="https://www.youtube.com/watch?v=zGA6YDzGCWo" target="_blank">Vídeos</a>
+        <a class="btn" href="blogs.html" target="_blank">Blogs</a>
+        <a class="btn" href="https://open.spotify.com/episode/74DcvQdrhdg36yO9bQpBz8#login" target="_blank">Podcasts</a>
+      </div>
+    </div>
+
+    <!-- Painel direito com o chat -->
+    <div class="right-panel">
+      <div class="chat-header">
+        <h2>Tire suas dúvidas sobre reciclagem de lixo eletrônico!</h2>
+        <button class="btn-logout" onclick="window.location.href='index.html'">Logout</button>
+      </div>
+      <div id="chatWindow">
+        <!-- As mensagens do chat serão inseridas aqui via JavaScript -->
+      </div>
+      <form id="chatForm">
+        <div class="input-group">
+          <input type="text" id="userInput" class="form-control" placeholder="Digite sua pergunta..." required>
+          <button type="submit" class="btn-submit">Enviar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Rodapé clicável (Easter Egg) -->
+  <footer id="footerAlpha">
+    wall.ie versão alfa 0.0.1
+  </footer>
+
+  <script>
+    // Função para expandir/recolher as perguntas
+    function toggleCollapsible() {
+      const content = document.querySelector('.collapsible-content');
+      content.classList.toggle('expanded');
+    }
+
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+    const chatWindow = document.getElementById('chatWindow');
+
+    // Prompt de sistema para orientar o assistente
+    const systemPrompt = `
+      Você é um assistente especializado em reciclagem de lixo eletrônico.
+      Responda de forma clara, objetiva e baseada em fatos.
+    `;
+
+    // Mensagem inicial opcional
+    const initialMessage = 'Olá! Como posso ajudar você com dúvidas sobre reciclagem de lixo eletrônico?';
+    addMessage('bot', initialMessage);
+
+    // Evento de envio do formulário do chat
+    chatForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const messageText = userInput.value.trim();
+      if (messageText) {
+        addMessage('user', messageText);
+        userInput.value = '';
+        getBotResponse(messageText, systemPrompt)
+          .then(botMessage => {
+            addMessage('bot', botMessage);
+          })
+          .catch(error => {
+            console.error('Erro:', error);
+            addMessage('bot', 'Desculpe, ocorreu um erro ao obter a resposta.');
+          });
+      }
+    });
+
+    /**
+     * Exibe uma mensagem no chat.
+     * @param {string} sender - 'user' ou 'bot'
+     * @param {string} text   - Conteúdo da mensagem
+     */
+    function addMessage(sender, text) {
+      const messageEl = document.createElement('div');
+      messageEl.classList.add('message', sender);
+      const bubble = document.createElement('div');
+      bubble.classList.add('message-text');
+      bubble.innerHTML = convertMarkdownToHTML(text);
+      messageEl.appendChild(bubble);
+      chatWindow.appendChild(messageEl);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    /**
+     * Converte Markdown simples para HTML (apenas negrito e itálico).
+     */
+    function convertMarkdownToHTML(markdown) {
+      return markdown
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>');
+    }
+
+    /**
+     * Chama a API PaLM (chat-bison-001) para obter a resposta do bot.
+     * Substitua 'SUA_API_KEY_AQUI' pela sua chave real.
+     */
+    async function getBotResponse(userMessage, systemPrompt) {
+      const API_KEY = 'SUA_API_KEY_AQUI'; // SUBSTITUA AQUI PELA SUA CHAVE
+      const API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta2/models/chat-bison-001:generateMessage';
+      const requestBody = {
+        prompt: {
+          messages: [
+            { author: 'system', content: systemPrompt },
+            { author: 'user', content: userMessage }
+          ]
+        },
+        temperature: 0.2,
+        candidateCount: 1
+      };
+      try {
+        const response = await fetch(`${API_ENDPOINT}?key=${API_KEY}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(requestBody)
+        });
+        if (!response.ok) {
+          const errData = await response.json();
+          console.error('Erro da API:', errData);
+          throw new Error(errData.error?.message || 'Erro na requisição');
+        }
+        const data = await response.json();
+        if (data.candidates && data.candidates.length > 0) {
+          return data.candidates[0].content;
+        } else {
+          throw new Error('Nenhuma resposta retornada pela API.');
+        }
+      } catch (error) {
+        console.error('Erro de comunicação com a API:', error);
+        throw error;
+      }
+    }
+
+    // Easter Egg: clique 5 vezes no rodapé para exibir a imagem "Toasty.png"
+    let clickCount = 0;
+    const footer = document.getElementById('footerAlpha');
+    footer.addEventListener('click', function() {
+      clickCount++;
+      if (clickCount >= 5) {
+        showToasty();
+        clickCount = 0;
+      }
+    });
+
+    function showToasty() {
+      const toasty = document.createElement('img');
+      toasty.src = 'Toasty.png';
+      toasty.alt = 'Toasty';
+      toasty.className = 'toasty-image';
+      document.body.appendChild(toasty);
+      setTimeout(() => {
+        toasty.remove();
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
