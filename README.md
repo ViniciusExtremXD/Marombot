@@ -5,6 +5,7 @@ Vitor Machad0 - 10409351
 Vinícius Magno - 10401365
 
 **Wall.ie** é um assistente web para reciclagem de lixo eletrônico.
+Link de acesso do protótipo: https://wallie-omega.vercel.app/
 
 ## Principais Funcionalidades
 
