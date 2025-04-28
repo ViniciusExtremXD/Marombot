@@ -5,23 +5,37 @@ Vitor Machad0 - 10409351
 Vinícius Magno - 10401365
 -->
 
+<!--
+RESUMO FUNCIONALIDADES:
+- Mostra lista de blogs sobre reciclagem de e-waste.
+- Painel esquerdo: título, descrição e botão “Voltar para o Chat”.
+- Painel direito: cards com título, texto e link externo.
+-->
+
 <!DOCTYPE html>
 <html lang="pt-br">
+
+<!-- ----------------------------------------------------------------------------- -->
+<!-- ===== Document Meta ===== -->
 <head>
   <meta charset="UTF-8">
   <title>Wall.ie - Blogs</title>
-  <!-- Bootstrap -->
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- ===== External CSS ===== -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet"
   >
-  <!-- Google Fonts -->
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
     rel="stylesheet"
   >
+
+  <!-- -------------------------------------------------------------------------- -->
+  <!-- ===== Internal Styles ===== -->
   <style>
-    /* Reset básico e configurações gerais */
+    /* Reset e configurações gerais */
     html, body {
       margin: 0;
       padding: 0;
@@ -37,6 +51,8 @@ Vinícius Magno - 10401365
       position: relative;
       min-height: 100vh;
     }
+
+    /* ------------------------------------------------------------------------ */
     /* Container principal */
     .container-blogs {
       display: flex;
@@ -48,7 +64,9 @@ Vinícius Magno - 10401365
       box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
       overflow: hidden;
     }
-    /* Painel esquerdo (gradiente) */
+
+    /* ------------------------------------------------------------------------ */
+    /* Painel esquerdo */
     .left-panel {
       background: linear-gradient(135deg, #127369 0%, #19a89d 100%);
       color: #ffffff;
@@ -71,7 +89,6 @@ Vinícius Magno - 10401365
       text-align: center;
       margin-bottom: 30px;
     }
-    /* Botão "Voltar para o Chat" */
     .btn-back {
       background-color: #127369;
       color: #fff;
@@ -80,14 +97,15 @@ Vinícius Magno - 10401365
       padding: 10px 20px;
       font-size: 14px;
       font-weight: 500;
-      transition: background-color 0.3s ease;
       text-decoration: none;
-      display: inline-block;
+      transition: background-color 0.3s ease;
       margin-bottom: 30px;
     }
     .btn-back:hover {
       background-color: #0f5f58;
     }
+
+    /* ------------------------------------------------------------------------ */
     /* Painel direito */
     .right-panel {
       width: 65%;
@@ -103,6 +121,8 @@ Vinícius Magno - 10401365
       font-size: 24px;
       margin-bottom: 20px;
     }
+
+    /* ------------------------------------------------------------------------ */
     /* Lista de blogs */
     .blog-list {
       display: flex;
@@ -131,6 +151,8 @@ Vinícius Magno - 10401365
     .blog-item a:hover {
       text-decoration: underline;
     }
+
+    /* ------------------------------------------------------------------------ */
     /* Rodapé */
     footer {
       margin-top: 20px;
@@ -139,7 +161,7 @@ Vinícius Magno - 10401365
       color: #666;
       cursor: pointer;
     }
-    /* Easter Egg - estilo da imagem Toasty */
+
     .toasty-image {
       position: fixed;
       bottom: 20px;
@@ -156,45 +178,46 @@ Vinícius Magno - 10401365
     }
   </style>
 </head>
+
 <body>
-  <!-- Container principal dos blogs -->
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- ===== Conteúdo ===== -->
   <div class="container-blogs">
-    <!-- Painel esquerdo -->
+
+    <!-- ---------------------------------------------------------- -->
+    <!-- Bloco: Painel Esquerdo -->
     <div class="left-panel">
       <h1>Wall.ie</h1>
       <p>Descubra onde encontrar as melhores informações e dicas sobre reciclagem de lixo eletrônico.</p>
-      <!-- Botão para voltar ao Chat -->
       <a href="chat.html" class="btn-back">Voltar para o Chat</a>
     </div>
-    <!-- Painel direito com a lista de blogs -->
+
+    <!-- ---------------------------------------------------------- -->
+    <!-- Bloco: Painel Direito -->
     <div class="right-panel">
       <h2>Principais Blogs sobre Reciclagem</h2>
       <div class="blog-list">
-        <!-- Blog 1 -->
         <div class="blog-item">
           <h3>eCycle</h3>
           <p>O eCycle é um dos portais mais completos sobre sustentabilidade. Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.</p>
           <a href="https://ecycle.com.br/" target="_blank">Visitar eCycle</a>
         </div>
-        <!-- Blog 2 -->
         <div class="blog-item">
           <h3>CicloVivo</h3>
           <p>O CicloVivo traz notícias e conteúdos sobre meio ambiente, cidades sustentáveis e práticas ecológicas, incluindo reciclagem e manejo correto de resíduos.</p>
           <a href="https://ciclovivo.com.br/" target="_blank">Visitar CicloVivo</a>
         </div>
-        <!-- Blog 3 -->
         <div class="blog-item">
           <h3>Portal do Meio Ambiente</h3>
           <p>Focado em discussões e artigos sobre sustentabilidade, o Portal do Meio Ambiente aborda temas de reciclagem, legislação e cidadania.</p>
           <a href="http://www.portaldomeioambiente.org.br/" target="_blank">Visitar Portal do Meio Ambiente</a>
         </div>
-        <!-- Blog 4 -->
         <div class="blog-item">
           <h3>EcoDebate</h3>
           <p>O EcoDebate é um portal que reúne artigos, análises e debates sobre questões ambientais, incluindo reciclagem e descarte adequado de resíduos.</p>
           <a href="https://www.ecodebate.com.br/" target="_blank">Visitar EcoDebate</a>
         </div>
-        <!-- Blog 5 -->
         <div class="blog-item">
           <h3>GreenMe</h3>
           <p>O GreenMe publica conteúdos sobre vida sustentável, incluindo dicas de reciclagem, redução de lixo e preservação ambiental.</p>
@@ -202,36 +225,35 @@ Vinícius Magno - 10401365
         </div>
       </div>
     </div>
+
   </div>
-  
-  <!-- Rodapé clicável -->
-  <footer id="footerAlpha">
-    wall.ie versão alfa 0.0.1
-  </footer>
-  
+
+  <!-- ------------------------------------------------------------------------ -->
+  <!-- ===== Rodapé ===== -->
+  <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
+
   <script>
-    // Easter Egg: ao clicar 5 vezes no rodapé, mostra a imagem "Toasty.png"
-    let clickCount = 0;
-    const footer = document.getElementById('footerAlpha');
-    footer.addEventListener('click', function() {
-      clickCount++;
-      if (clickCount >= 5) {
-        showToasty();
-        clickCount = 0; // reinicia a contagem
+    (function() {
+      let clickCount = 0;
+      const footer = document.getElementById('footerAlpha');
+      footer.addEventListener('click', function() {
+        clickCount++;
+        if (clickCount >= 5) {
+          showToasty();
+          clickCount = 0;
+        }
+      });
+
+      function showToasty() {
+        const toasty = document.createElement('img');
+        toasty.src = 'Toasty.png';
+        toasty.alt = 'Toasty';
+        toasty.className = 'toasty-image';
+        document.body.appendChild(toasty);
+        setTimeout(() => toasty.remove(), 2000);
       }
-    });
-    
-    function showToasty() {
-      const toasty = document.createElement('img');
-      toasty.src = 'Toasty.png';
-      toasty.alt = 'Toasty';
-      toasty.className = 'toasty-image';
-      document.body.appendChild(toasty);
-      // Remove a imagem após 2 segundos
-      setTimeout(() => {
-        toasty.remove();
-      }, 2000);
-    }
+    })();
   </script>
+
 </body>
 </html>
