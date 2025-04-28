@@ -128,20 +128,6 @@ RESUMO DE FUNCIONALIDADES:
       text-align: center;
     }
 
-    .toasty-image {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 150px;
-      animation: toastyAnim 2s ease-in-out forwards;
-      z-index: 9999;
-    }
-    @keyframes toastyAnim {
-      0% { opacity: 0; transform: translateX(-100%); }
-      25% { opacity: 1; transform: translateX(0); }
-      75% { opacity: 1; transform: translateX(0); }
-      100% { opacity: 0; transform: translateX(-100%); }
-    }
   </style>
 </head>
 
@@ -176,27 +162,6 @@ RESUMO DE FUNCIONALIDADES:
   <!-- ------------------------------------------------------------------------ -->
   <!-- Rodapé -->
   <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
-
-  <script>
-    // redireciona no login
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      window.location.href = 'chat.html';
-    });
-
-    let clickCount = 0;
-    document.getElementById('footerAlpha').addEventListener('click', function() {
-      if (++clickCount >= 5) {
-        const img = document.createElement('img');
-        img.src = 'Toasty.png';
-        img.alt = 'Toasty';
-        img.className = 'toasty-image';
-        document.body.appendChild(img);
-        setTimeout(() => img.remove(), 2000);
-        clickCount = 0;
-      }
-    });
-  </script>
 
 </body>
 </html>

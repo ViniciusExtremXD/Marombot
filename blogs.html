@@ -162,20 +162,6 @@ RESUMO FUNCIONALIDADES:
       cursor: pointer;
     }
 
-    .toasty-image {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      width: 150px;
-      animation: toastyAnim 2s ease-in-out forwards;
-      z-index: 9999;
-    }
-    @keyframes toastyAnim {
-      0% { opacity: 0; transform: translateX(-100%); }
-      25% { opacity: 1; transform: translateX(0); }
-      75% { opacity: 1; transform: translateX(0); }
-      100% { opacity: 0; transform: translateX(-100%); }
-    }
   </style>
 </head>
 
@@ -231,29 +217,6 @@ RESUMO FUNCIONALIDADES:
   <!-- ------------------------------------------------------------------------ -->
   <!-- ===== Rodapé ===== -->
   <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
-
-  <script>
-    (function() {
-      let clickCount = 0;
-      const footer = document.getElementById('footerAlpha');
-      footer.addEventListener('click', function() {
-        clickCount++;
-        if (clickCount >= 5) {
-          showToasty();
-          clickCount = 0;
-        }
-      });
-
-      function showToasty() {
-        const toasty = document.createElement('img');
-        toasty.src = 'Toasty.png';
-        toasty.alt = 'Toasty';
-        toasty.className = 'toasty-image';
-        document.body.appendChild(toasty);
-        setTimeout(() => toasty.remove(), 2000);
-      }
-    })();
-  </script>
 
 </body>
 </html>
