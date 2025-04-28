@@ -1,61 +1,41 @@
 # Wall.ie
-Integrantes do grupo:
-Rodrigo Lucas - 10365071
-Vitor Machad0 - 10409351
-Vinícius Magno - 10401365
 
-**Wall.ie** é um assistente web para reciclagem de lixo eletrônico.
+**Integrantes do grupo:**
+- Rodrigo Lucas – 10365071
+- Vitor Machad0 – 10409351
+- Vinícius Magno – 10401365
+
+Wall.ie é um assistente web para reciclagem de lixo eletrônico.
 Link de acesso do protótipo: https://wallie-omega.vercel.app/
 
-## Principais Funcionalidades
-
-- **Login** (`login.html`)
-  - Formulário de usuário e senha.
-  - Redireciona para o chat.
-  - Easter egg: 5 cliques no rodapé exibem `Toasty.png`.
-
-- **Chat** (`chat.html`)
-  - Área de conversação com perguntas e respostas sobre reciclagem.
-  - Menu expansível de perguntas frequentes.
-  - Links diretos para ecopontos, vídeos, blogs e podcasts.
-  - Logout volta à página de login.
-  - Integração com API de linguagem (PaLM) via JavaScript.
-  - Easter egg idem ao login.
-
-- **Blogs** (`blogs.html`)
-  - Lista de portais e blogs relevantes.
-  - Cards com título, descrição e link externo.
-  - Botão "Voltar para o Chat".
-  - Easter egg idem.
-
-## Estrutura de arquivos
-
+## Estrutura de Pastas
 
 /Wall.ie/
-  ├── login.html
-  ├── chat.html
-  ├── blogs.html
+├── login.html
+├── chat.html
+├── blogs.html
+└── README.md                 # Documentação (este arquivo)
 
+## Como Executar Localmente
+- Abra a pasta;
+- Abra o arquivo index.html par ater acesso à página de login
 
-## Tecnologias
+## Dependências
+- Nenhuma além de um navegador moderno e Python (opcional) para servidor local.
 
-- HTML5 e CSS3
-- Bootstrap 5
-- Google Fonts (Poppins)
-- JavaScript vanilla
-- API do Gemini para treinamento do modelo do chatbot (PENDENTE)
+## Credenciais de Teste - (aidna não foi implementado o backend)
+- Usuário: `teste_user`
+- Senha: `senha123`
 
-## Como executar
+Essas credenciais são fictícias para fins demonstrativos
 
-1. Clone ou faça download do repositório.
-2. Abra `login.html` em qualquer navegador moderno.
+## Acesso ao Protótipo
+- Link: https://wallie-omega.vercel.app/
+- Navegadores suportados: Chrome, Firefox, Edge, Safari.
 
 ## Observações
+- Versão: alfa 0.0.1
+- Integração com API de linguagem e treinamento do modelo estão pendentes.
+- Easter Egg: clique 5 vezes no rodapé em qualquer página para ver a imagem Toasty.
 
-- Projeto está em versão alfa (0.0.1).
-- Está pendente o treinamento do bot e sua integração plena na plataforma.
-
----
-
-*Desenvolvido pelo grupo Wall.ie*
 
