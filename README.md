@@ -2,7 +2,7 @@
 
 **Integrantes do grupo:**
 - Rodrigo Lucas – 10365071
-- Vitor Machad0 – 10409351
+- Vitor Machado – 10409358
 - Vinícius Magno – 10401365
 
 Wall.ie é um assistente web para reciclagem de lixo eletrônico.
