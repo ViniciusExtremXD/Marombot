@@ -29,7 +29,7 @@ Wall.ie é um assistente web para reciclagem de lixo eletrônico.
 Essas credenciais são fictícias para fins demonstrativos
 
 ## Acesso ao Protótipo
-- Link: https://wallie-omega.vercel.app/
+- Execute o arquivo index.html em algum navegador.
 - Navegadores suportados: Chrome, Firefox, Edge, Safari.
 
 ## Observações
