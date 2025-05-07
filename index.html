@@ -1,7 +1,10 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
 <!--
 Integrantes do grupo:
 Rodrigo Lucas - 10365071
-Vitor Machad0 - 10409351
+Vitor Machado - 10409358
 Vinícius Magno - 10401365
 -->
 
@@ -12,15 +15,10 @@ RESUMO DE FUNCIONALIDADES:
 - Ao submeter, redireciona para chat.html.
 -->
 
-<!DOCTYPE html>
-<html lang="pt-br">
-
-<!-- ----------------------------------------------------------------------------- -->
 <head>
   <meta charset="UTF-8">
   <title>Wall.ie - Login</title>
 
-  <!-- -------------------------------------------------------------------------- -->
   <!-- ===== External CSS ===== -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
@@ -31,7 +29,6 @@ RESUMO DE FUNCIONALIDADES:
     rel="stylesheet"
   >
 
-  <!-- -------------------------------------------------------------------------- -->
   <!-- ===== Internal Styles ===== -->
   <style>
     /* Tudo centralizado vertical e horizontalmente */
@@ -133,7 +130,6 @@ RESUMO DE FUNCIONALIDADES:
 
 <body>
 
-  <!-- ------------------------------------------------------------------------ -->
   <!-- ===== Caixa de Login ===== -->
   <div class="container-login">
 
@@ -150,7 +146,7 @@ RESUMO DE FUNCIONALIDADES:
     <!-- Painel direito -->
     <div class="right-panel">
       <h2>Login</h2>
-      <form id="loginForm">
+      <form id="loginForm" action="chat.index">
         <input type="text" class="form-control" placeholder="Usuário" required>
         <input type="password" class="form-control" placeholder="Senha" required>
         <button type="submit" class="btn btn-primary">Entrar</button>
@@ -159,7 +155,6 @@ RESUMO DE FUNCIONALIDADES:
 
   </div>
 
-  <!-- ------------------------------------------------------------------------ -->
   <!-- Rodapé -->
   <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
 
