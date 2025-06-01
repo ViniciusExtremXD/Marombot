@@ -1,41 +1,37 @@
+<!DOCTYPE html>
+
 <!--
 Integrantes do grupo:
-Rodrigo Lucas - 10365071
-Vitor Machado - 10409358
-Vinícius Magno - 10401365
+- Rodrigo Lucas – 10365071
+- Vitor Machado – 10409358
+- Vinícius Magno – 10401365
+
+RESUMO DE FUNCIONALIDADES:
+- Exibe uma lista de portais/blogs relacionados a reciclagem de lixo eletrônico.
+- Cada card apresenta nome, descrição sucinta e botão “Abrir” que carrega o site correspondente.
+- Permite retorno ao chat principal via botão “Voltar para o Chat”.
 -->
 
-<!--
-RESUMO FUNCIONALIDADES:
-- Mostra lista de blogs sobre reciclagem de e-waste.
-- Painel esquerdo: título, descrição e botão “Voltar para o Chat”.
-- Painel direito: cards com título, texto e link externo.
--->
-
-<!DOCTYPE html>
 <html lang="pt-br">
-
-<!-- ----------------------------------------------------------------------------- -->
-<!-- ===== Document Meta ===== -->
 <head>
-  <meta charset="UTF-8">
-  <title>Wall.ie - Blogs</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Wall.ie – Blogs</title>
 
-  <!-- -------------------------------------------------------------------------- -->
-  <!-- ===== External CSS ===== -->
+  <!-- Bootstrap CSS (v5.3) -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
     rel="stylesheet"
-  >
+  />
+
+  <!-- Fonte Poppins -->
   <link
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
     rel="stylesheet"
-  >
+  />
 
-  <!-- -------------------------------------------------------------------------- -->
-  <!-- ===== Internal Styles ===== -->
   <style>
-    /* Reset e configurações gerais */
+    /* ===================== RESET BÁSICO ===================== */
     html, body {
       margin: 0;
       padding: 0;
@@ -46,177 +42,172 @@ RESUMO FUNCIONALIDADES:
     body {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      position: relative;
       min-height: 100vh;
-    }
-
-    /* ------------------------------------------------------------------------ */
-    /* Container principal */
-    .container-blogs {
-      display: flex;
-      width: 85%;
-      height: 80%;
-      max-width: 1200px;
-      background: #ffffff;
-      border-radius: 15px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-      overflow: hidden;
-    }
-
-    /* ------------------------------------------------------------------------ */
-    /* Painel esquerdo */
-    .left-panel {
-      background: linear-gradient(135deg, #127369 0%, #19a89d 100%);
-      color: #ffffff;
-      width: 35%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
       box-sizing: border-box;
     }
-    .left-panel h1 {
-      font-size: 32px;
-      font-weight: 600;
-      margin-bottom: 15px;
-    }
-    .left-panel p {
-      font-size: 14px;
-      line-height: 1.5;
-      opacity: 0.9;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-    .btn-back {
-      background-color: #127369;
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 500;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      margin-bottom: 30px;
-    }
-    .btn-back:hover {
-      background-color: #0f5f58;
-    }
 
-    /* ------------------------------------------------------------------------ */
-    /* Painel direito */
-    .right-panel {
-      width: 65%;
-      display: flex;
-      flex-direction: column;
-      padding: 40px;
-      box-sizing: border-box;
-      overflow-y: auto;
-    }
-    .right-panel h2 {
-      color: #127369;
-      font-weight: 600;
-      font-size: 24px;
-      margin-bottom: 20px;
-    }
-
-    /* ------------------------------------------------------------------------ */
-    /* Lista de blogs */
+    /* ===================== LISTA DE BLOGS ===================== */
     .blog-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background-color: #ffffff;
+      box-sizing: border-box;
     }
+
     .blog-item {
       border: 1px solid #ccc;
       border-radius: 10px;
       padding: 15px;
       background-color: #f9f9f9;
+      margin-bottom: 20px;
     }
     .blog-item h3 {
       margin-top: 0;
       color: #127369;
+      font-size: 18px;
+      margin-bottom: 8px;
     }
     .blog-item p {
       margin-bottom: 10px;
       color: #555;
-    }
-    .blog-item a {
-      color: #127369;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .blog-item a:hover {
-      text-decoration: underline;
-    }
-
-    /* ------------------------------------------------------------------------ */
-    /* Rodapé */
-    footer {
-      margin-top: 20px;
-      text-align: center;
       font-size: 14px;
-      color: #666;
+      line-height: 1.4;
+    }
+    .blog-item button {
+      background-color: #127369;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 14px;
       cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .blog-item button:hover {
+      background-color: #0f5f58;
     }
 
+    /* ===================== RODAPÉ ===================== */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+      padding: 10px 0;
+      background-color: #ffffff;
+    }
+
+    /* ===================== RESPONSIVIDADE ===================== */
+    @media (max-width: 768px) {
+      .blog-list {
+        padding: 15px;
+      }
+      .blog-item {
+        padding: 12px;
+      }
+    }
   </style>
 </head>
-
 <body>
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- ===== Conteúdo ===== -->
-  <div class="container-blogs">
-
-    <!-- ---------------------------------------------------------- -->
-    <!-- Bloco: Painel Esquerdo -->
-    <div class="left-panel">
-      <h1>Wall.ie</h1>
-      <p>Descubra onde encontrar as melhores informações e dicas sobre reciclagem de lixo eletrônico.</p>
-      <a href="chat.html" class="btn-back">Voltar para o Chat</a>
+  <!-- === Lista de Blogs (preenche TODO o iframe) === -->
+  <div class="blog-list">
+    <!-- eCycle -->
+    <div class="blog-item">
+      <h3>eCycle</h3>
+      <p>
+        O eCycle é um dos portais mais completos sobre sustentabilidade.
+        Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.
+      </p>
+      <!-- Chama o proxy do parent (chat.html) -->
+      <button onclick="loadBlog('https://ecycle.com.br/')">
+        Abrir eCycle
+      </button>
     </div>
 
-    <!-- ---------------------------------------------------------- -->
-    <!-- Bloco: Painel Direito -->
-    <div class="right-panel">
-      <h2>Principais Blogs sobre Reciclagem</h2>
-      <div class="blog-list">
-        <div class="blog-item">
-          <h3>eCycle</h3>
-          <p>O eCycle é um dos portais mais completos sobre sustentabilidade. Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.</p>
-          <a href="https://ecycle.com.br/" target="_blank">Visitar eCycle</a>
-        </div>
-        <div class="blog-item">
-          <h3>CicloVivo</h3>
-          <p>O CicloVivo traz notícias e conteúdos sobre meio ambiente, cidades sustentáveis e práticas ecológicas, incluindo reciclagem e manejo correto de resíduos.</p>
-          <a href="https://ciclovivo.com.br/" target="_blank">Visitar CicloVivo</a>
-        </div>
-        <div class="blog-item">
-          <h3>Portal do Meio Ambiente</h3>
-          <p>Focado em discussões e artigos sobre sustentabilidade, o Portal do Meio Ambiente aborda temas de reciclagem, legislação e cidadania.</p>
-          <a href="http://www.portaldomeioambiente.org.br/" target="_blank">Visitar Portal do Meio Ambiente</a>
-        </div>
-        <div class="blog-item">
-          <h3>EcoDebate</h3>
-          <p>O EcoDebate é um portal que reúne artigos, análises e debates sobre questões ambientais, incluindo reciclagem e descarte adequado de resíduos.</p>
-          <a href="https://www.ecodebate.com.br/" target="_blank">Visitar EcoDebate</a>
-        </div>
-        <div class="blog-item">
-          <h3>GreenMe</h3>
-          <p>O GreenMe publica conteúdos sobre vida sustentável, incluindo dicas de reciclagem, redução de lixo e preservação ambiental.</p>
-          <a href="https://www.greenme.com.br/" target="_blank">Visitar GreenMe</a>
-        </div>
-      </div>
+    <!-- CicloVivo -->
+    <div class="blog-item">
+      <h3>CicloVivo</h3>
+      <p>
+        O CicloVivo traz notícias e conteúdos sobre meio ambiente,
+        com foco em práticas ecológicas, incluindo reciclagem e manejo correto de resíduos.
+      </p>
+      <button onclick="loadBlog('https://ciclovivo.com.br/')">
+        Abrir CicloVivo
+      </button>
     </div>
 
+    <!-- Portal do Meio Ambiente -->
+    <div class="blog-item">
+      <h3>Portal do Meio Ambiente</h3>
+      <p>
+        Focado em discussões e artigos sobre sustentabilidade e cidadania ambiental,
+        o Portal do Meio Ambiente aborda temas de reciclagem, legislação e práticas de descarte adequado.
+      </p>
+      <button onclick="loadBlog('http://www.portaldomeioambiente.org.br/')">
+        Abrir Portal do Meio Ambiente
+      </button>
+    </div>
+
+    <!-- EcoDebate -->
+    <div class="blog-item">
+      <h3>EcoDebate</h3>
+      <p>
+        O EcoDebate é um portal que reúne artigos, análises e notícias sobre meio ambiente,
+        incluindo reciclagem, descarte adequado de resíduos e políticas ambientais.
+      </p>
+      <button onclick="loadBlog('https://www.ecodebate.com.br/')">
+        Abrir EcoDebate
+      </button>
+    </div>
+
+    <!-- GreenMe -->
+    <div class="blog-item">
+      <h3>GreenMe</h3>
+      <p>
+        O GreenMe publica conteúdos sobre vida sustentável,
+        dicas de reciclagem, redução de lixo e preservação ambiental.
+      </p>
+      <button onclick="loadBlog('https://www.greenme.com.br/')">
+        Abrir GreenMe
+      </button>
+    </div>
   </div>
 
-  <!-- ------------------------------------------------------------------------ -->
-  <!-- ===== Rodapé ===== -->
+  <!-- === Rodapé simples === -->
   <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
 
+  <script>
+    function loadBlog(url) {
+      // Sempre supomos que este 'blogs.html' está RODANDO dentro de um <iframe>
+      // cujo parent é o chat.html. Se não estiver, ele abrirá em nova aba.
+
+      try {
+        // se puder acessar o parent e achar elementos do iframe do chat
+        if (
+          window.parent &&
+          window.parent !== window &&
+          parent.document.getElementById("iframeContainer") &&
+          parent.document.getElementById("chatWindow")
+        ) {
+          // esconde o chat pai e mostra o iframe pai
+          parent.document.getElementById("chatWindow").style.display = "none";
+          parent.document.getElementById("chatForm").style.display = "none";
+          parent.document.getElementById("iframeContainer").style.display = "block";
+
+          // seta o src do <iframe id="embeddedFrame"> no parent para proxy
+          var encoded = encodeURIComponent(url);
+          parent.document.getElementById("embeddedFrame").src =
+            "blog-proxy.php?url=" + encoded;
+        } else {
+          // se não estiver num iframe ou não conseguir acessar o parent, abre em nova aba
+          window.open(url, "_blank");
+        }
+      } catch (e) {
+        // em caso de erro de permissão/CORS, abre em nova aba
+        window.open(url, "_blank");
+      }
+    }
+  </script>
 </body>
 </html>
