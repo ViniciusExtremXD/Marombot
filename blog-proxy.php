@@ -7,7 +7,7 @@ Integrantes do grupo:
 
 RESUMO DE FUNCIONALIDADES:
 - Recebe parâmetro GET "url" apontando para site de blog (ex.: https://ecycle.com.br/).
-- Faz download do conteúdo HTML remoto via file_get_contents() com stream context.
+- Faz download do conteúdo HTML remoto via cURL (mais robusto que file_get_contents).
 - Remove instruções que bloqueiem embed e ajusta o conteúdo para exibição em iframe.
 - Retorna o HTML processado para ser exibido dentro do <iframe> no chat.html.
 */
@@ -66,79 +66,73 @@ if (!$is_allowed) {
     exit;
 }
 
-// 4) Função para fazer requisição HTTP usando file_get_contents
+// 4) Função para fazer requisição HTTP usando cURL (mais robusto)
 function fetchContent($url) {
     $max_redirects = 5;
     $redirect_count = 0;
     
+    // Verifica se cURL está disponível
+    if (!function_exists('curl_init')) {
+        throw new Exception("cURL não está disponível no servidor");
+    }
+    
     while ($redirect_count < $max_redirects) {
-        // Cria o context para file_get_contents
-        $context_options = [
-            'http' => [
-                'method' => 'GET',
-                'header' => [
-                    'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-                    'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-                    'Accept-Language: pt-BR,pt;q=0.9,en;q=0.8',
-                    'Accept-Encoding: gzip, deflate',
-                    'Connection: close',
-                    'Upgrade-Insecure-Requests: 1'
-                ],
-                'timeout' => 20,
-                'follow_location' => 0, // Não seguir redirects automaticamente
-                'ignore_errors' => true, // Para capturar códigos de erro
-                'max_redirects' => 0
-            ],
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
+        $ch = curl_init();
+        
+        // Configurações básicas do cURL
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false, // Controlaremos os redirects manualmente
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_CONNECTTIMEOUT => 10,
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_HEADER => true, // Incluir headers na resposta
+            CURLOPT_NOBODY => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_ENCODING => '', // Aceita gzip, deflate automaticamente
+            
+            // User Agent realista
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            
+            // Headers HTTP
+            CURLOPT_HTTPHEADER => [
+                'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language: pt-BR,pt;q=0.9,en;q=0.8',
+                'Accept-Encoding: gzip, deflate',
+                'Connection: keep-alive',
+                'Upgrade-Insecure-Requests: 1',
+                'Sec-Fetch-Dest: document',
+                'Sec-Fetch-Mode: navigate',
+                'Sec-Fetch-Site: none'
             ]
-        ];
+        ]);
         
-        $context = stream_context_create($context_options);
+        $response = curl_exec($ch);
         
-        // Faz a requisição
-        $content = @file_get_contents($url, false, $context);
-        
-        if ($content === false) {
-            $error = error_get_last();
-            throw new Exception("Erro ao acessar URL: " . ($error['message'] ?? 'Erro desconhecido'));
+        if ($response === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            throw new Exception("Erro cURL: $error");
         }
         
-        // Analisa os headers de resposta
-        if (!isset($http_response_header) || empty($http_response_header)) {
-            throw new Exception("Não foi possível obter headers de resposta");
-        }
+        $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+        $content_type = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
         
-        // Extrai código HTTP
-        $status_line = $http_response_header[0];
-        if (!preg_match('/HTTP\/\d+\.\d+\s+(\d{3})/', $status_line, $matches)) {
-            throw new Exception("Não foi possível determinar código HTTP");
-        }
+        curl_close($ch);
         
-        $http_code = intval($matches[1]);
-        
-        // Extrai Content-Type
-        $content_type = 'text/html';
-        foreach ($http_response_header as $header) {
-            if (stripos($header, 'Content-Type:') === 0) {
-                $content_type = trim(substr($header, 13));
-                break;
-            }
-        }
+        // Separa headers do body
+        $headers = substr($response, 0, $header_size);
+        $body = substr($response, $header_size);
         
         // Verifica se é redirect
         if ($http_code >= 300 && $http_code < 400) {
-            $location = null;
-            foreach ($http_response_header as $header) {
-                if (stripos($header, 'Location:') === 0) {
-                    $location = trim(substr($header, 9));
-                    break;
-                }
-            }
-            
-            if ($location) {
+            // Procura header Location
+            if (preg_match('/Location:\s*(.+)/i', $headers, $matches)) {
+                $location = trim($matches[1]);
+                
                 // Se for URL relativa, converte para absoluta
                 if (!preg_match('#^https?://#i', $location)) {
                     $parsed = parse_url($url);
@@ -167,29 +161,18 @@ function fetchContent($url) {
         }
         
         // Verifica se é HTML
-        if (!preg_match('/text\/html/i', $content_type)) {
-            // Aceita se não tiver content-type definido
-            if (trim($content_type) !== '' && !preg_match('/text\/plain/i', $content_type)) {
-                throw new Exception("Conteúdo não é HTML. Content-Type: $content_type");
-            }
-        }
-        
-        // Decodifica gzip se necessário
-        if (function_exists('gzdecode')) {
-            // Verifica se o conteúdo está comprimido
-            if (substr($content, 0, 2) === "\x1f\x8b") {
-                $decoded = @gzdecode($content);
-                if ($decoded !== false) {
-                    $content = $decoded;
-                }
+        if ($content_type && !preg_match('/text\/html/i', $content_type)) {
+            // Tenta detectar HTML no conteúdo mesmo se o content-type estiver errado
+            if (!preg_match('/<html|<head|<body|<!DOCTYPE/i', substr($body, 0, 500))) {
+                throw new Exception("Conteúdo não parece ser HTML. Content-Type: $content_type");
             }
         }
         
         return [
-            'body' => $content,
-            'headers' => $http_response_header,
+            'body' => $body,
+            'headers' => $headers,
             'http_code' => $http_code,
-            'content_type' => $content_type,
+            'content_type' => $content_type ?: 'text/html',
             'final_url' => $url
         ];
     }
@@ -234,9 +217,11 @@ function processHTML($html, $base_url) {
         '/<meta\s+name=["\']?referrer["\']?[^>]*>/i'
     ], '', $html);
     
-    // Remove scripts que podem interferir
+    // Remove alguns scripts problemáticos mas mantém scripts essenciais
     $html = preg_replace([
-        '/<script[^>]*>.*?<\/script>/is',
+        '/<script[^>]*>.*?window\.top.*?<\/script>/is',
+        '/<script[^>]*>.*?parent\.location.*?<\/script>/is',
+        '/<script[^>]*>.*?top\.location.*?<\/script>/is',
         '/<noscript[^>]*>.*?<\/noscript>/is'
     ], '', $html);
     
@@ -265,6 +250,11 @@ function processHTML($html, $base_url) {
             
             // Se começa com #, é âncora na mesma página
             if (substr($url, 0, 1) === '#') {
+                return $matches[0];
+            }
+            
+            // Se é javascript: ou mailto:, mantém
+            if (preg_match('#^(javascript|mailto):#i', $url)) {
                 return $matches[0];
             }
             
@@ -309,7 +299,7 @@ function processHTML($html, $base_url) {
         }
         
         /* Melhora containers */
-        .container, .content, .main {
+        .container, .content, .main, .wrapper {
             max-width: 100% !important;
             width: 100% !important;
         }
@@ -329,7 +319,8 @@ function processHTML($html, $base_url) {
         [class*="modal"], [id*="modal"],
         [class*="ad-"], [id*="ad-"],
         .social-share, .share-buttons,
-        .newsletter-signup, .subscription-box {
+        .newsletter-signup, .subscription-box,
+        .cookie-notice, .cookie-banner {
             display: none !important;
         }
         
@@ -342,6 +333,13 @@ function processHTML($html, $base_url) {
         /* Remove scrollbars horizontais */
         html, body {
             overflow-x: hidden !important;
+        }
+        
+        /* Ajustes para sites responsivos */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px !important;
+            }
         }
     </style>
     ';
@@ -487,8 +485,8 @@ function createErrorPage($message) {
                 }
             }
             
-            // Auto-volta após 8 segundos
-            setTimeout(goBack, 8000);
+            // Auto-volta após 10 segundos
+            setTimeout(goBack, 10000);
         </script>
     </body>
     </html>';
