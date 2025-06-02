@@ -95,6 +95,7 @@ RESUMO DE FUNCIONALIDADES:
       color: #666;
       padding: 10px 0;
       background-color: #ffffff;
+      cursor: default;
     }
 
     /* ===================== RESPONSIVIDADE ===================== */
@@ -119,7 +120,6 @@ RESUMO DE FUNCIONALIDADES:
         O eCycle é um dos portais mais completos sobre sustentabilidade.
         Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.
       </p>
-      <!-- Chama o proxy do parent (chat.html) -->
       <button onclick="loadBlog('https://ecycle.com.br/')">
         Abrir eCycle
       </button>
@@ -175,36 +175,35 @@ RESUMO DE FUNCIONALIDADES:
   </div>
 
   <!-- === Rodapé simples === -->
-  <footer id="footerAlpha">wall.ie versão alfa 0.0.1</footer>
+  <footer id="footerAlpha">wall.ie versão beta 0.1</footer>
 
   <script>
     function loadBlog(url) {
-      // Sempre supomos que este 'blogs.html' está RODANDO dentro de um <iframe>
-      // cujo parent é o chat.html. Se não estiver, ele abrirá em nova aba.
+      // Pressupõe que este blogs.html esteja rodando dentro de um <iframe>
+      // cujo parent é o chat.html. Se não estiver, abre em nova aba.
 
       try {
-        // se puder acessar o parent e achar elementos do iframe do chat
         if (
           window.parent &&
           window.parent !== window &&
           parent.document.getElementById("iframeContainer") &&
           parent.document.getElementById("chatWindow")
         ) {
-          // esconde o chat pai e mostra o iframe pai
+          // Esconde o chat pai e exibe o iframe pai
           parent.document.getElementById("chatWindow").style.display = "none";
           parent.document.getElementById("chatForm").style.display = "none";
           parent.document.getElementById("iframeContainer").style.display = "block";
 
-          // seta o src do <iframe id="embeddedFrame"> no parent para proxy
+          // Define o src do <iframe id="embeddedFrame"> no parent para blog-proxy.php
           var encoded = encodeURIComponent(url);
           parent.document.getElementById("embeddedFrame").src =
             "blog-proxy.php?url=" + encoded;
         } else {
-          // se não estiver num iframe ou não conseguir acessar o parent, abre em nova aba
+          // Se não estiver num iframe ou não conseguir acessar o parent, abre em nova aba
           window.open(url, "_blank");
         }
       } catch (e) {
-        // em caso de erro de permissão/CORS, abre em nova aba
+        // Em caso de erro de permissão/CORS, abre em nova aba
         window.open(url, "_blank");
       }
     }
