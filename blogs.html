@@ -8,8 +8,7 @@ Integrantes do grupo:
 
 RESUMO DE FUNCIONALIDADES:
 - Exibe uma lista de portais/blogs relacionados a reciclagem de lixo eletrônico.
-- Cada card apresenta nome, descrição sucinta e botão “Abrir” que carrega o site correspondente.
-- Permite retorno ao chat principal via botão “Voltar para o Chat”.
+- Cada card apresenta nome, descrição sucinta e botão "Abrir" que carrega o site correspondente via proxy.
 -->
 
 <html lang="pt-br">
@@ -83,9 +82,21 @@ RESUMO DE FUNCIONALIDADES:
       font-size: 14px;
       cursor: pointer;
       transition: background-color 0.3s;
+      margin-right: 10px;
     }
     .blog-item button:hover {
       background-color: #0f5f58;
+    }
+    .blog-item button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    .loading-indicator {
+      display: none;
+      color: #127369;
+      font-size: 12px;
+      font-style: italic;
     }
 
     /* ===================== RODAPÉ ===================== */
@@ -98,20 +109,11 @@ RESUMO DE FUNCIONALIDADES:
       cursor: default;
     }
 
-    /* ===================== RESPONSIVIDADE ===================== */
-    @media (max-width: 768px) {
-      .blog-list {
-        padding: 15px;
-      }
-      .blog-item {
-        padding: 12px;
-      }
-    }
   </style>
 </head>
 <body>
 
-  <!-- === Lista de Blogs (preenche TODO o iframe) === -->
+  <!-- === Lista de Blogs === -->
   <div class="blog-list">
     <!-- eCycle -->
     <div class="blog-item">
@@ -120,9 +122,13 @@ RESUMO DE FUNCIONALIDADES:
         O eCycle é um dos portais mais completos sobre sustentabilidade.
         Aborda dicas de reciclagem, reaproveitamento de materiais e consumo consciente.
       </p>
-      <button onclick="loadBlog('https://ecycle.com.br/')">
+      <button onclick="loadBlog('https://ecycle.com.br/', this)">
         Abrir eCycle
       </button>
+      <button onclick="openDirect('https://ecycle.com.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-ecycle">Carregando...</div>
     </div>
 
     <!-- CicloVivo -->
@@ -132,9 +138,13 @@ RESUMO DE FUNCIONALIDADES:
         O CicloVivo traz notícias e conteúdos sobre meio ambiente,
         com foco em práticas ecológicas, incluindo reciclagem e manejo correto de resíduos.
       </p>
-      <button onclick="loadBlog('https://ciclovivo.com.br/')">
+      <button onclick="loadBlog('https://ciclovivo.com.br/', this)">
         Abrir CicloVivo
       </button>
+      <button onclick="openDirect('https://ciclovivo.com.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-ciclovivo">Carregando...</div>
     </div>
 
     <!-- Portal do Meio Ambiente -->
@@ -144,9 +154,13 @@ RESUMO DE FUNCIONALIDADES:
         Focado em discussões e artigos sobre sustentabilidade e cidadania ambiental,
         o Portal do Meio Ambiente aborda temas de reciclagem, legislação e práticas de descarte adequado.
       </p>
-      <button onclick="loadBlog('http://www.portaldomeioambiente.org.br/')">
+      <button onclick="loadBlog('http://www.portaldomeioambiente.org.br/', this)">
         Abrir Portal do Meio Ambiente
       </button>
+      <button onclick="openDirect('http://www.portaldomeioambiente.org.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-portal">Carregando...</div>
     </div>
 
     <!-- EcoDebate -->
@@ -156,9 +170,13 @@ RESUMO DE FUNCIONALIDADES:
         O EcoDebate é um portal que reúne artigos, análises e notícias sobre meio ambiente,
         incluindo reciclagem, descarte adequado de resíduos e políticas ambientais.
       </p>
-      <button onclick="loadBlog('https://www.ecodebate.com.br/')">
+      <button onclick="loadBlog('https://www.ecodebate.com.br/', this)">
         Abrir EcoDebate
       </button>
+      <button onclick="openDirect('https://www.ecodebate.com.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-ecodebate">Carregando...</div>
     </div>
 
     <!-- GreenMe -->
@@ -168,9 +186,29 @@ RESUMO DE FUNCIONALIDADES:
         O GreenMe publica conteúdos sobre vida sustentável,
         dicas de reciclagem, redução de lixo e preservação ambiental.
       </p>
-      <button onclick="loadBlog('https://www.greenme.com.br/')">
+      <button onclick="loadBlog('https://www.greenme.com.br/', this)">
         Abrir GreenMe
       </button>
+      <button onclick="openDirect('https://www.greenme.com.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-greenme">Carregando...</div>
+    </div>
+
+    <!-- Pensamento Verde -->
+    <div class="blog-item">
+      <h3>Pensamento Verde</h3>
+      <p>
+        O Pensamento Verde é um portal dedicado à sustentabilidade e meio ambiente,
+        com artigos sobre reciclagem, energia renovável e práticas ecológicas.
+      </p>
+      <button onclick="loadBlog('https://www.pensamentoverde.com.br/', this)">
+        Abrir Pensamento Verde
+      </button>
+      <button onclick="openDirect('https://www.pensamentoverde.com.br/')">
+        Abrir em Nova Aba
+      </button>
+      <div class="loading-indicator" id="loading-pensamento">Carregando...</div>
     </div>
   </div>
 
@@ -178,10 +216,7 @@ RESUMO DE FUNCIONALIDADES:
   <footer id="footerAlpha">wall.ie versão beta 0.1</footer>
 
   <script>
-    function loadBlog(url) {
-      // Pressupõe que este blogs.html esteja rodando dentro de um <iframe>
-      // cujo parent é o chat.html. Se não estiver, abre em nova aba.
-
+    function loadBlog(url, buttonElement) {
       try {
         if (
           window.parent &&
@@ -189,23 +224,67 @@ RESUMO DE FUNCIONALIDADES:
           parent.document.getElementById("iframeContainer") &&
           parent.document.getElementById("chatWindow")
         ) {
+          // Desabilita o botão e mostra loading
+          buttonElement.disabled = true;
+          const loadingDiv = buttonElement.parentElement.querySelector('.loading-indicator');
+          if (loadingDiv) {
+            loadingDiv.style.display = 'inline';
+          }
+
           // Esconde o chat pai e exibe o iframe pai
           parent.document.getElementById("chatWindow").style.display = "none";
           parent.document.getElementById("chatForm").style.display = "none";
           parent.document.getElementById("iframeContainer").style.display = "block";
 
           // Define o src do <iframe id="embeddedFrame"> no parent para blog-proxy.php
-          var encoded = encodeURIComponent(url);
-          parent.document.getElementById("embeddedFrame").src =
-            "blog-proxy.php?url=" + encoded;
+          const encoded = encodeURIComponent(url);
+          const iframe = parent.document.getElementById("embeddedFrame");
+          
+          // Adiciona listener para quando o iframe carregar
+          iframe.onload = function() {
+            buttonElement.disabled = false;
+            if (loadingDiv) {
+              loadingDiv.style.display = 'none';
+            }
+          };
+          
+          // Adiciona listener para erro
+          iframe.onerror = function() {
+            buttonElement.disabled = false;
+            if (loadingDiv) {
+              loadingDiv.style.display = 'none';
+            }
+            alert('Erro ao carregar o site. Tente abrir em nova aba.');
+          };
+          
+          iframe.src = "blog-proxy.php?url=" + encoded;
+          
+          // Timeout para reabilitar botão caso não carregue
+          setTimeout(function() {
+            buttonElement.disabled = false;
+            if (loadingDiv) {
+              loadingDiv.style.display = 'none';
+            }
+          }, 10000);
+          
         } else {
           // Se não estiver num iframe ou não conseguir acessar o parent, abre em nova aba
-          window.open(url, "_blank");
+          openDirect(url);
         }
       } catch (e) {
         // Em caso de erro de permissão/CORS, abre em nova aba
-        window.open(url, "_blank");
+        console.error('Erro ao carregar via proxy:', e);
+        openDirect(url);
+        buttonElement.disabled = false;
+        const loadingDiv = buttonElement.parentElement.querySelector('.loading-indicator');
+        if (loadingDiv) {
+          loadingDiv.style.display = 'none';
+        }
       }
+    }
+    
+    function openDirect(url) {
+      window.open(url, "_blank");
     }
   </script>
 </body>
